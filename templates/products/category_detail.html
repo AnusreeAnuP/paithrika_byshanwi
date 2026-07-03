@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: 70vh;">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2 class="mb-0" style="color: var(--primary-color);">{{ category.name }}</h2>
+            {% if category.description %}
+            <p class="text-muted mb-0">{{ category.description }}</p>
+            {% endif %}
+        </div>
+        
+        {% if products %}
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <div class="product-img-wrapper">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
+                        {% else %}
+                        <div class="bg-secondary bg-opacity-10 w-100 h-100 d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-1">
+                            {% if product.is_new_arrival %}
+                            <span class="badge bg-danger">New</span>
+                            {% endif %}
+                            {% if product.has_offer %}
+                            <span class="badge bg-warning text-dark">Offer</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="product-details card-body text-center">
+                        <h3 class="product-title h6 mb-2">
+                            <a href="{% url 'products:product_detail' product.slug %}" class="text-white text-decoration-none">{{ product.name }}</a>
+                        </h3>
+                        <p class="product-price mb-3">₹{{ product.price }}</p>
+                        <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-outline-dark btn-sm w-100">
+                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+            <h4>No products found</h4>
+            <p class="text-muted">We currently don't have any products in this category.</p>
+            <a href="{% url 'products:home' %}" class="btn btn-primary-custom mt-2">Go Back Home</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

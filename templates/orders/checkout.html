@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-white" style="min-height: 70vh;">
+    <div class="container">
+        <h2 class="mb-4" style="color: var(--primary-color);">Checkout</h2>
+        
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h4 class="mb-0">Shipping Details</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label text-muted">Full Name</label>
+                                    <input type="text" name="full_name" class="form-control" value="{{ user.get_full_name|default:user.username }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted">Email</label>
+                                    <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted">Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-muted">Shipping Address</label>
+                                    <textarea name="address" class="form-control" rows="3" required></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted">City</label>
+                                    <input type="text" name="city" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted">Postal Code</label>
+                                    <input type="text" name="postal_code" class="form-control" required>
+                                </div>
+                                
+                                <div class="col-12 mt-4">
+                                    <hr class="mt-0">
+                                    <h5 class="mb-3">Payment Method</h5>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="cod" checked>
+                                        <label class="form-check-label" for="cod">
+                                            Cash on Delivery (COD)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="online" disabled>
+                                        <label class="form-check-label text-muted" for="online">
+                                            Online Payment (Coming Soon)
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary-custom w-100 py-3">Place Order</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h4 class="mb-0">Order Summary</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        {% for item in items %}
+                        <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                            <div>
+                                <h6 class="mb-0">{{ item.product.name }}</h6>
+                                <small class="text-muted">Qty: {{ item.quantity }}</small>
+                            </div>
+                            <span>₹{{ item.get_total_price }}</span>
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="d-flex justify-content-between mb-2 mt-3">
+                            <span class="text-muted">Subtotal</span>
+                            <span>₹{{ total }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Shipping</span>
+                            <span class="text-success">Free</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-0">
+                            <span class="fw-bold fs-5">Total</span>
+                            <span class="fw-bold fs-5" style="color: var(--primary-color);">₹{{ total }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notice -->
+                <div class="alert alert-info border-0 shadow-sm">
+                    <i class="fas fa-info-circle me-2"></i> Cash on delivery is available for this order. We'll verify your order via phone shortly.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

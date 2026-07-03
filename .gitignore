@@ -1,0 +1,23 @@
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django local DB and media uploads
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Generated local docs (optional to exclude, but keeps repo clean)
+Project_Report_Paithrika.docx
+Project_Presentation_Paithrika.pptx
+
+# Operating system files
+.DS_Store
+Thumbs.db

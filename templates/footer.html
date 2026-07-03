@@ -1,0 +1,137 @@
+<!-- Minimalist Premium Footer Structure matching image_289797.png -->
+<footer class="main-footer mt-auto">
+    <div class="container footer-top">
+        <div class="row g-4 align-items-start">
+            
+            <!-- Column 1: Brand Typography & Description -->
+            <div class="col-md-4">
+                <div class="footer-brand-block">
+                    <h2 class="footer-logo">Paithrika</h2>
+                    <p class="footer-subtitle">BY SHANWI</p>
+                </div>
+                <p class="brand-desc mt-3">
+                    Your one-stop destination for premium ethnic wear.<br>
+                    Experience tradition with modern elegance.
+                </p>
+            </div>
+
+            <!-- Column 2: Quick Links -->
+            <div class="col-md-4 ps-md-5">
+                <h5 class="column-title">Quick Links</h5>
+                <ul class="footer-links-list list-unstyled mt-3">
+                    <li><a href="{% url 'products:about_us' %}">About Us</a></li>
+                    <li><a href="{% url 'products:contact_us' %}">Contact Us</a></li>
+                    <li><a href="{% url 'products:terms_conditions' %}">Terms & Conditions</a></li>
+                    <li><a href="{% url 'products:privacy_policy' %}">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Connect With Us -->
+            <div class="col-md-4">
+                <h5 class="column-title">Connect With Us</h5>
+                <div class="d-flex gap-3 mt-3 social-icons-wrapper">
+                    <a href="#" class="social-icon-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Line and Rights Section -->
+    <div class="container footer-bottom-wrapper">
+        <div class="footer-bottom text-center">
+            <p class="mb-0">&copy; 2026 Paithrika_ByShanwi. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Clean, Custom CSS Styling -->
+<style>
+    .main-footer {
+        background-color: #380B1B; /* The premium deep maroon background tailored for your boutique */
+        color: #FFFFFF;
+        font-family: 'Poppins', sans-serif;
+        padding-top: 50px;
+        padding-bottom: 30px;
+    }
+
+    /* Logo Brand Block matching image_289797.png precisely */
+    .footer-brand-block {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1;
+    }
+    .footer-logo {
+        font-family: 'Great Vibes', cursive;
+        font-size: 3rem;
+        margin-bottom: -6px;
+        font-weight: 400;
+        color: #FFFFFF;
+    }
+    .footer-subtitle {
+        font-family: 'Cinzel', serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 6px;
+        color: #C2944A; /* Soft elegant gold */
+        margin-bottom: 0;
+        text-transform: uppercase;
+        padding-left: 2px;
+    }
+
+    /* Description Block */
+    .brand-desc {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.5;
+        font-weight: 300;
+    }
+
+    /* Typography & Headers for Lists */
+    .column-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #FFFFFF;
+        margin-bottom: 15px;
+    }
+    
+    /* Navigation Link Styles */
+    .footer-links-list li {
+        margin-bottom: 8px;
+    }
+    .footer-links-list a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+    }
+    .footer-links-list a:hover {
+        color: #C2944A;
+    }
+
+    /* Minimalist Social Icons matching image_289797.png */
+    .social-icon-link {
+        color: #FFFFFF;
+        font-size: 1.2rem;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .social-icon-link:hover {
+        color: #C2944A;
+    }
+
+    /* Footer Bottom Border and Text styling */
+    .footer-bottom-wrapper {
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        padding-top: 20px;
+    }
+    .footer-bottom p {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.85);
+    }
+</style>

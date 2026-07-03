@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'products:home' %}" class="text-decoration-none text-muted">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'products:category_detail' product.category.slug %}" class="text-decoration-none text-muted">{{ product.category.name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <!-- Product Image -->
+            <div class="col-md-6">
+                <div class="product-img-wrapper rounded shadow-sm border overflow-hidden bg-light" style="height: 500px;">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="d-flex justify-content-center align-items-center w-100 h-100">
+                        <i class="fas fa-image fa-5x text-muted opacity-50"></i>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="text-uppercase tracking-wider small text-muted font-weight-bold">{{ product.category.name }}</span>
+                    {% if product.is_best_seller %}
+                    <span class="badge bg-danger rounded-pill px-3 py-1">Best Seller</span>
+                    {% endif %}
+                </div>
+                
+                <h1 class="display-5 fw-bold mb-3" style="color: var(--primary-color);">{{ product.name }}</h1>
+                
+                <p class="fs-2 fw-bold mb-4">₹{{ product.price }}</p>
+                
+                <div class="mb-4 pb-4 border-bottom">
+                    <h5 class="fw-bold mb-3">Description</h5>
+                    <p class="text-muted lh-lg">{{ product.description }}</p>
+                </div>
+                
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    {% if product.stock > 0 %}
+                    <span class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i> In Stock ({{ product.stock }})</span>
+                    {% else %}
+                    <span class="text-danger fw-bold"><i class="fas fa-times-circle me-1"></i> Out of Stock</span>
+                    {% endif %}
+                </div>
+                
+                <div class="d-flex gap-3">
+                    {% if product.stock > 0 %}
+                    <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-primary-custom btn-lg flex-grow-1 px-4 py-3">
+                        <i class="fas fa-cart-plus me-2"></i> Add to Cart
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary btn-lg flex-grow-1 px-4 py-3" disabled>
+                        Out of Stock
+                    </button>
+                    {% endif %}
+                    
+                    <button class="btn btn-outline-danger btn-lg px-4" title="Add to Wishlist">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Products -->
+{% if related_products %}
+<section class="py-5 bg-light border-top">
+    <div class="container py-3">
+        <h3 class="mb-4 text-center fw-bold" style="color: var(--primary-color);">You Might Also Like</h3>
+        <div class="row g-4 justify-content-center">
+            {% for rel_product in related_products %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <div class="product-img-wrapper" style="height: 250px;">
+                        {% if rel_product.image %}
+                        <img src="{{ rel_product.image.url }}" class="product-img h-100 w-100" style="object-fit:cover;" alt="{{ rel_product.name }}">
+                        {% else %}
+                        <div class="bg-secondary bg-opacity-10 w-100 h-100 d-flex justify-content-center align-items-center">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="product-details card-body text-center p-3">
+                        <h4 class="product-title h6 mb-1 text-truncate">
+                            <a href="{% url 'products:product_detail' rel_product.slug %}" class="text-dark text-decoration-none">{{ rel_product.name }}</a>
+                        </h4>
+                        <p class="product-price small mb-2 fw-bold">₹{{ rel_product.price }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

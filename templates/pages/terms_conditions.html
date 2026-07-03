@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Terms & Conditions{% endblock %}
+
+{% block content %}
+<!-- Elegant Boutique Header Banner -->
+<section class="policy-banner">
+    <div class="container text-center text-white">
+        <h1 class="policy-title">Terms & Conditions</h1>
+        <!-- Elegant Divider Flourish -->
+        <div class="gold-flourish">
+            <span class="line"></span>
+            <span class="diamond">♦</span>
+            <span class="line"></span>
+        </div>
+        <!-- Breadcrumbs -->
+        <nav class="policy-breadcrumbs">
+            <a href="{% url 'products:home' %}">Home</a>
+            <i class="fas fa-chevron-right mx-2"></i>
+            <span>Terms & Conditions</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Content Layout Container -->
+<section class="policy-body py-5">
+    <div class="container my-3">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="policy-card">
+                    
+                    <!-- Date Bar -->
+                    <div class="d-flex align-items-center mb-4 text-muted small">
+                        <i class="far fa-calendar-alt text-maroon me-2"></i>
+                        <span>Last updated: <strong class="text-maroon">July 2026</strong></span>
+                    </div>
+
+                    <div class="gold-divider mb-5"></div>
+
+                    <!-- Article 1: Acceptance of Terms -->
+                    <div class="policy-item d-flex align-items-start mb-5">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="ms-4 content-text">
+                            <h3>1. Acceptance of Terms</h3>
+                            <p>By browsing or shopping with Paithrika by Shanwi, you agree to fulfill and follow our standard platform transaction terms.</p>
+                        </div>
+                    </div>
+
+                    <div class="gold-divider mb-5"></div>
+
+                    <!-- Article 2: Platform Usage -->
+                    <div class="policy-item d-flex align-items-start mb-5">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="ms-4 content-text">
+                            <h3>2. Platform Usage</h3>
+                            <p>Users are prohibited from attempting any data modification or system security violations across the application store modules.</p>
+                        </div>
+                    </div>
+
+                    <div class="gold-divider mb-5"></div>
+
+                    <!-- Action Button Row -->
+                    <div class="text-center pt-3">
+                        <a href="{% url 'products:home' %}" class="btn-return-home">
+                            <i class="fas fa-arrow-left me-2"></i> Return to Home
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scoped Custom Styling to match the Image exactly -->
+<style>
+    :root {
+        --brand-maroon: #5A122D;
+        --brand-maroon-dark: #3D0B1E;
+        --brand-gold: #C2944A;
+        --brand-gold-hover: #A67B37;
+        --bg-cream: #FAF7F2;
+    }
+
+    body {
+        background-color: var(--bg-cream);
+    }
+
+    /* Banner Styles */
+    .policy-banner {
+        background: linear-gradient(135deg, var(--brand-maroon-dark) 0%, var(--brand-maroon) 50%, var(--brand-maroon-dark) 100%);
+        padding: 60px 0;
+        position: relative;
+    }
+    .policy-title {
+        font-family: 'Cinzel', 'Cormorant Garamond', serif;
+        font-size: 2.8rem;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
+    
+    /* Flourish & Breadcrumbs */
+    .gold-flourish {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 15px 0;
+    }
+    .gold-flourish .line {
+        height: 1px;
+        width: 80px;
+        background-color: var(--brand-gold);
+    }
+    .gold-flourish .diamond {
+        color: var(--brand-gold);
+        margin: 0 10px;
+        font-size: 0.8rem;
+    }
+    .policy-breadcrumbs {
+        font-size: 0.9rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    .policy-breadcrumbs a {
+        color: var(--brand-gold);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .policy-breadcrumbs a:hover {
+        color: #fff;
+    }
+    .policy-breadcrumbs span {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Content Card */
+    .policy-card {
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        padding: 50px;
+        border: 1px solid rgba(194, 148, 74, 0.15);
+    }
+    .text-maroon {
+        color: var(--brand-maroon);
+    }
+
+    /* Elegant Dividers */
+    .gold-divider {
+        height: 1px;
+        background: linear-gradient(to right, transparent, var(--brand-gold) 50%, transparent);
+        position: relative;
+    }
+    .gold-divider::after {
+        content: "♦";
+        color: var(--brand-gold);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 0 8px;
+        font-size: 0.7rem;
+    }
+
+    /* Policy Items Layout */
+    .icon-wrapper {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(90, 18, 45, 0.05);
+        border: 1px solid rgba(90, 18, 45, 0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .icon-wrapper i {
+        color: var(--brand-maroon);
+        font-size: 1.5rem;
+    }
+    .content-text h3 {
+        font-family: 'Cormorant Garamond', serif;
+        color: var(--brand-maroon);
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+    .content-text p {
+        font-family: 'Poppins', sans-serif;
+        color: #555555;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Button Style */
+    .btn-return-home {
+        background-color: var(--brand-gold);
+        color: #ffffff !important;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        padding: 12px 35px;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-block;
+        transition: transform 0.2s, background-color 0.2s;
+        box-shadow: 0 4px 15px rgba(194, 148, 74, 0.2);
+    }
+    .btn-return-home:hover {
+        background-color: var(--brand-gold-hover);
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
