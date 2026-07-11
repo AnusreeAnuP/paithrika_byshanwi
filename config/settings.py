@@ -173,3 +173,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# WhatsApp Settings
+WHATSAPP_NUMBER = os.environ.get('WHATSAPP_NUMBER', '918086297803')
+

@@ -1,3 +1,5 @@
+import urllib.parse
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -20,11 +22,22 @@ def cart_detail(request):
     items = cart.items.select_related('product')
     total = sum(item.get_total_price() for item in items)
     
+    # Build WhatsApp Order Message
+    whatsapp_number = getattr(settings, 'WHATSAPP_NUMBER', '918086297803')
+    whatsapp_text = "Hi Paithrika, I would like to place an order for the following items:\n\n"
+    for item in items:
+        whatsapp_text += f"- *{item.product.name}* x {item.quantity} = ₹{item.get_total_price()}\n"
+    whatsapp_text += f"\nTotal Amount: *₹{total}*"
+    
+    whatsapp_url = f"https://wa.me/{whatsapp_number}?text={urllib.parse.quote(whatsapp_text)}"
+    
     return render(request, 'cart/cart_detail.html', {
         'cart': cart,
         'items': items,
-        'total': total
+        'total': total,
+        'whatsapp_url': whatsapp_url
     })
+
 
 def cart_add(request, product_id):
     cart = _get_or_create_cart(request)

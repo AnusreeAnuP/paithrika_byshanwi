@@ -55,20 +55,29 @@
                     {% endif %}
                 </div>
                 
-                <div class="d-flex gap-3">
-                    {% if product.stock > 0 %}
-                    <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-primary-custom btn-lg flex-grow-1 px-4 py-3">
-                        <i class="fas fa-cart-plus me-2"></i> Add to Cart
-                    </a>
-                    {% else %}
-                    <button class="btn btn-secondary btn-lg flex-grow-1 px-4 py-3" disabled>
-                        Out of Stock
-                    </button>
-                    {% endif %}
+                <div class="d-flex flex-column gap-2 mb-4">
+                    <div class="d-flex gap-2">
+                        {% if product.stock > 0 %}
+                        <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-primary-custom btn-lg flex-grow-1 px-4 py-3 text-center">
+                            <i class="fas fa-cart-plus me-2"></i> Add to Cart
+                        </a>
+                        <a href="https://wa.me/{{ whatsapp_number }}?text=Hi%20Paithrika%2C%20I%20want%20to%20purchase%20the%20product%3A%20%2A{{ product.name|urlencode }}%2A%20%28Price%3A%20%2A%E2%82%B9{{ product.price|urlencode }}%2A%29.%0ALink%3A%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-whatsapp btn-lg flex-grow-1 px-4 py-3 text-center">
+                            <i class="fab fa-whatsapp me-2"></i> Buy via WhatsApp
+                        </a>
+                        {% else %}
+                        <button class="btn btn-secondary btn-lg flex-grow-1 px-4 py-3" disabled>
+                            Out of Stock
+                        </button>
+                        {% endif %}
+                        
+                        <button class="btn btn-outline-danger btn-lg px-4" title="Add to Wishlist">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
                     
-                    <button class="btn btn-outline-danger btn-lg px-4" title="Add to Wishlist">
-                        <i class="far fa-heart"></i>
-                    </button>
+                    <a href="https://wa.me/{{ whatsapp_number }}?text=Hi%20Paithrika%2C%20I%20would%20like%20to%20enquire%20about%20the%20product%3A%20%2A{{ product.name|urlencode }}%2A%20%28Price%3A%20%2A%E2%82%B9{{ product.price|urlencode }}%2A%29.%20Could%20you%20please%20provide%20more%20details%3F%0ALink%3A%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="btn btn-whatsapp-outline btn-lg w-100 py-3 mt-2 text-center">
+                        <i class="fab fa-whatsapp me-2"></i> Enquire on WhatsApp
+                    </a>
                 </div>
             </div>
         </div>

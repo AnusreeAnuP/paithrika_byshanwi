@@ -69,6 +69,9 @@
                             <span class="fw-bold fs-5 text-primary">₹{{ total }}</span>
                         </div>
                         <a href="{% url 'orders:checkout' %}" class="btn btn-primary-custom w-100 py-3 mb-2">Proceed to Checkout</a>
+                        <a href="{{ whatsapp_url }}" target="_blank" class="btn btn-whatsapp w-100 py-3 mb-2 text-center">
+                            <i class="fab fa-whatsapp me-2"></i> Order via WhatsApp
+                        </a>
                         <a href="{% url 'products:home' %}" class="btn btn-outline-secondary w-100 py-2">Continue Shopping</a>
                     </div>
                 </div>
