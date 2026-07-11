@@ -157,16 +157,26 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-if WHITENOISE_AVAILABLE:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Django 5.1+ uses STORAGES dict (DEFAULT_FILE_STORAGE & STATICFILES_STORAGE removed)
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+        if WHITENOISE_AVAILABLE
+        else 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    },
+}
+
 if os.environ.get('CLOUDINARY_URL'):
     INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    STORAGES['default'] = {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    }
 
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'https://*.koyeb.app']
 
