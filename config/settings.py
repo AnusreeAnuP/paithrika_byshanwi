@@ -164,6 +164,10 @@ if WHITENOISE_AVAILABLE:
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+if os.environ.get('CLOUDINARY_URL'):
+    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'https://*.koyeb.app']
 
 # Default primary key field type
