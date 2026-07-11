@@ -52,9 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
-    'cloudinary',
+    
     # Local Apps
     'accounts',
     'products',
@@ -164,15 +163,6 @@ if WHITENOISE_AVAILABLE:
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-# Cloudinary Setup for persistent media storage
-if os.environ.get('CLOUDINARY_CLOUD_NAME') or os.environ.get('CLOUDINARY_URL'):
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
-    }
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'https://*.koyeb.app']
 
