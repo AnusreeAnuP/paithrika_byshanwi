@@ -1,0 +1,531 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Products{% endblock %}
+
+{% block content %}
+
+<!-- Page Header Banner -->
+<section class="myp-hero">
+    <div class="container text-center text-white">
+        <h1 class="myp-hero-title">My Products</h1>
+        <div class="myp-divider">
+            <span class="myp-line"></span>
+            <span class="myp-diamond">&#9830;</span>
+            <span class="myp-line"></span>
+        </div>
+        <p class="myp-hero-sub">Track your current orders &amp; browse your purchase history</p>
+        <nav class="myp-breadcrumb">
+            <a href="{% url 'products:home' %}">Home</a>
+            <i class="fas fa-chevron-right mx-2"></i>
+            <span>My Products</span>
+        </nav>
+    </div>
+</section>
+
+<section class="myp-section">
+    <div class="container">
+
+        <!-- Summary Cards Row -->
+        <div class="row g-3 mb-5">
+            <div class="col-6 col-md-3">
+                <div class="myp-stat-card" style="border-left: 4px solid #C2944A;">
+                    <div class="myp-stat-num">{{ current_orders.count }}</div>
+                    <div class="myp-stat-label">Current Orders</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="myp-stat-card" style="border-left: 4px solid #28a745;">
+                    <div class="myp-stat-num">{{ previous_orders.count }}</div>
+                    <div class="myp-stat-label">Past Orders</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="myp-stat-card" style="border-left: 4px solid #5A1127;">
+                    <div class="myp-stat-num">{{ current_orders.count|add:previous_orders.count }}</div>
+                    <div class="myp-stat-label">Total Orders</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="myp-stat-card" style="border-left: 4px solid #17a2b8;">
+                    <div class="myp-stat-num">COD</div>
+                    <div class="myp-stat-label">Payment Method</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== CURRENT ORDERS SECTION ===== -->
+        <div class="myp-section-header mb-3">
+            <div class="myp-section-icon current">
+                <i class="fas fa-shipping-fast"></i>
+            </div>
+            <div>
+                <h2 class="myp-section-title">Current Products</h2>
+                <p class="myp-section-desc">Orders in progress — Pending, Processing, or Shipped</p>
+            </div>
+        </div>
+
+        {% if current_orders %}
+        <div class="row g-4 mb-5">
+            {% for order in current_orders %}
+            <div class="col-12">
+                <div class="myp-order-card">
+                    <!-- Card Header -->
+                    <div class="myp-order-header current">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <div class="myp-order-meta">
+                                <span class="myp-meta-label">Order ID</span>
+                                <span class="myp-meta-val">#{{ order.id }}</span>
+                            </div>
+                            <div class="myp-divider-v"></div>
+                            <div class="myp-order-meta">
+                                <span class="myp-meta-label">Placed On</span>
+                                <span class="myp-meta-val">{{ order.created_at|date:"d M Y" }}</span>
+                            </div>
+                            <div class="myp-divider-v"></div>
+                            <div class="myp-order-meta">
+                                <span class="myp-meta-label">Total</span>
+                                <span class="myp-meta-val gold">&#8377;{{ order.get_total_cost }}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            {% if order.status == 'Pending' %}
+                            <span class="myp-badge pending"><i class="fas fa-hourglass-half me-1"></i>Pending</span>
+                            {% elif order.status == 'Processing' %}
+                            <span class="myp-badge processing"><i class="fas fa-cog fa-spin me-1"></i>Processing</span>
+                            {% elif order.status == 'Shipped' %}
+                            <span class="myp-badge shipped"><i class="fas fa-shipping-fast me-1"></i>Shipped</span>
+                            {% endif %}
+                            <button class="myp-toggle-btn" onclick="toggleCard('cur-body-{{ order.id }}', 'cur-icon-{{ order.id }}')">
+                                <i id="cur-icon-{{ order.id }}" class="fas fa-chevron-down"></i> Details
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Body -->
+                    <div id="cur-body-{{ order.id }}" class="myp-order-body" style="display:none;">
+
+                        <!-- Progress Timeline -->
+                        <div class="myp-timeline mb-4">
+                            <h6 class="myp-timeline-label">Order Progress</h6>
+                            <div class="myp-steps">
+                                <div class="myp-step-track">
+                                    <div class="myp-step-fill" style="width:{% if order.status == 'Pending' %}0%{% elif order.status == 'Processing' %}33%{% elif order.status == 'Shipped' %}66%{% elif order.status == 'Delivered' %}100%{% else %}0%{% endif %};"></div>
+                                </div>
+                                <div class="myp-step">
+                                    <div class="myp-step-dot active"><i class="fas fa-shopping-bag"></i></div>
+                                    <small>Placed</small>
+                                </div>
+                                <div class="myp-step">
+                                    <div class="myp-step-dot {% if order.status == 'Processing' or order.status == 'Shipped' or order.status == 'Delivered' %}active{% endif %}"><i class="fas fa-cog"></i></div>
+                                    <small>Processing</small>
+                                </div>
+                                <div class="myp-step">
+                                    <div class="myp-step-dot {% if order.status == 'Shipped' or order.status == 'Delivered' %}active{% endif %}"><i class="fas fa-truck"></i></div>
+                                    <small>Shipped</small>
+                                </div>
+                                <div class="myp-step">
+                                    <div class="myp-step-dot {% if order.status == 'Delivered' %}done{% endif %}"><i class="fas fa-check-circle"></i></div>
+                                    <small>Delivered</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Items -->
+                        <h6 class="myp-items-label">Items in this Order</h6>
+                        <div class="row g-3 mb-4">
+                            {% for item in order.items.all %}
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="myp-product-item">
+                                    <div class="myp-product-img">
+                                        {% if item.product.image %}
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                        {% else %}
+                                        <i class="fas fa-image"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="myp-product-info">
+                                        <div class="myp-product-name">{{ item.product.name }}</div>
+                                        <div class="myp-product-qty">Qty: {{ item.quantity }}</div>
+                                        <div class="myp-product-price">&#8377;{{ item.get_cost }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Shipping & Summary -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="myp-info-box">
+                                    <h6 class="myp-info-label"><i class="fas fa-map-marker-alt me-1" style="color:#C2944A;"></i> Shipping Address</h6>
+                                    <p class="myp-info-text">
+                                        <strong>{{ order.full_name }}</strong><br>
+                                        {{ order.address }}<br>
+                                        {{ order.city }} &ndash; {{ order.postal_code }}<br>
+                                        <i class="fas fa-phone-alt me-1" style="color:#C2944A;"></i>{{ order.phone }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="myp-info-box">
+                                    <h6 class="myp-info-label"><i class="fas fa-receipt me-1" style="color:#C2944A;"></i> Order Summary</h6>
+                                    <div class="myp-summary-row"><span>Payment</span><span>Cash on Delivery</span></div>
+                                    <div class="myp-summary-row"><span>Order Date</span><span>{{ order.created_at|date:"d M Y" }}</span></div>
+                                    <div class="myp-summary-divider"></div>
+                                    <div class="myp-summary-row total"><span>Grand Total</span><span>&#8377;{{ order.get_total_cost }}</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- WhatsApp Track -->
+                        <div class="mt-3 text-end">
+                            <a href="https://wa.me/918086297803?text=Hi%20Paithrika%2C%20I%20need%20help%20with%20my%20Order%20%23{{ order.id }}."
+                               target="_blank" class="myp-whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i> Track Order on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="myp-empty mb-5">
+            <div class="myp-empty-icon"><i class="fas fa-shopping-bag"></i></div>
+            <h5>No Active Orders</h5>
+            <p>You have no ongoing orders right now.</p>
+            <a href="{% url 'products:home' %}" class="myp-shop-btn">
+                <i class="fas fa-store me-2"></i>Continue Shopping
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- ===== PREVIOUS ORDERS SECTION ===== -->
+        <div class="myp-section-header mb-3">
+            <div class="myp-section-icon prev">
+                <i class="fas fa-history"></i>
+            </div>
+            <div>
+                <h2 class="myp-section-title">Previous Products</h2>
+                <p class="myp-section-desc">Your delivered &amp; cancelled order history</p>
+            </div>
+        </div>
+
+        {% if previous_orders %}
+        <!-- Filter Tabs -->
+        <div class="d-flex gap-2 flex-wrap mb-4">
+            <button class="myp-tab active" onclick="filterPrev('all', this)">
+                <i class="fas fa-th-list me-1"></i> All
+            </button>
+            <button class="myp-tab" onclick="filterPrev('Delivered', this)">
+                <i class="fas fa-check-circle me-1"></i> Delivered
+            </button>
+            <button class="myp-tab" onclick="filterPrev('Cancelled', this)">
+                <i class="fas fa-times-circle me-1"></i> Cancelled
+            </button>
+        </div>
+
+        <div class="row g-4" id="prevOrdersList">
+            {% for order in previous_orders %}
+            <div class="col-12 prev-order-card" data-status="{{ order.status }}">
+                <div class="myp-order-card">
+                    <!-- Card Header -->
+                    <div class="myp-order-header prev">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <div class="myp-order-meta">
+                                <span class="myp-meta-label">Order ID</span>
+                                <span class="myp-meta-val">#{{ order.id }}</span>
+                            </div>
+                            <div class="myp-divider-v"></div>
+                            <div class="myp-order-meta">
+                                <span class="myp-meta-label">Placed On</span>
+                                <span class="myp-meta-val">{{ order.created_at|date:"d M Y" }}</span>
+                            </div>
+                            <div class="myp-divider-v"></div>
+                            <div class="myp-order-meta">
+                                <span class="myp-meta-label">Total</span>
+                                <span class="myp-meta-val gold">&#8377;{{ order.get_total_cost }}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            {% if order.status == 'Delivered' %}
+                            <span class="myp-badge delivered"><i class="fas fa-check-circle me-1"></i>Delivered</span>
+                            {% elif order.status == 'Cancelled' %}
+                            <span class="myp-badge cancelled"><i class="fas fa-times-circle me-1"></i>Cancelled</span>
+                            {% endif %}
+                            <button class="myp-toggle-btn ghost" onclick="toggleCard('prev-body-{{ order.id }}', 'prev-icon-{{ order.id }}')">
+                                <i id="prev-icon-{{ order.id }}" class="fas fa-chevron-down"></i> Details
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Body -->
+                    <div id="prev-body-{{ order.id }}" class="myp-order-body" style="display:none;">
+                        <h6 class="myp-items-label">Items Ordered</h6>
+                        <div class="row g-3 mb-4">
+                            {% for item in order.items.all %}
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="myp-product-item">
+                                    <div class="myp-product-img">
+                                        {% if item.product.image %}
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                        {% else %}
+                                        <i class="fas fa-image"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="myp-product-info">
+                                        <div class="myp-product-name">{{ item.product.name }}</div>
+                                        <div class="myp-product-qty">Qty: {{ item.quantity }}</div>
+                                        <div class="myp-product-price">&#8377;{{ item.get_cost }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="myp-info-box">
+                                    <h6 class="myp-info-label"><i class="fas fa-map-marker-alt me-1" style="color:#C2944A;"></i> Shipping Address</h6>
+                                    <p class="myp-info-text">
+                                        <strong>{{ order.full_name }}</strong><br>
+                                        {{ order.address }}<br>
+                                        {{ order.city }} &ndash; {{ order.postal_code }}<br>
+                                        <i class="fas fa-phone-alt me-1" style="color:#C2944A;"></i>{{ order.phone }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="myp-info-box">
+                                    <h6 class="myp-info-label"><i class="fas fa-receipt me-1" style="color:#C2944A;"></i> Order Summary</h6>
+                                    <div class="myp-summary-row"><span>Payment</span><span>Cash on Delivery</span></div>
+                                    <div class="myp-summary-row"><span>Order Date</span><span>{{ order.created_at|date:"d M Y" }}</span></div>
+                                    <div class="myp-summary-divider"></div>
+                                    <div class="myp-summary-row total"><span>Grand Total</span><span>&#8377;{{ order.get_total_cost }}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="myp-empty">
+            <div class="myp-empty-icon" style="background:rgba(194,148,74,0.08);"><i class="fas fa-box-open" style="color:#C2944A;"></i></div>
+            <h5>No Previous Orders</h5>
+            <p>Your completed orders will appear here once delivered or cancelled.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<style>
+.myp-hero {
+    background: linear-gradient(135deg, #3D0B1E 0%, #5A1127 50%, #3D0B1E 100%);
+    padding: 55px 0 40px;
+}
+.myp-hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.6rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.myp-hero-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.75);
+    margin: 0 0 14px;
+}
+.myp-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 10px 0;
+}
+.myp-line { height: 1px; width: 70px; background: #C2944A; display: inline-block; }
+.myp-diamond { color: #C2944A; font-size: 0.8rem; }
+.myp-breadcrumb {
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    color: rgba(255,255,255,0.7);
+}
+.myp-breadcrumb a { color: #C2944A; text-decoration: none; }
+.myp-breadcrumb i { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+
+.myp-section { background: #FAF7F2; min-height: 60vh; padding: 50px 0 70px; }
+
+.myp-stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+.myp-stat-num { font-size: 1.8rem; font-weight: 700; color: #5A1127; font-family: 'Cinzel', serif; }
+.myp-stat-label { font-size: 0.78rem; color: #888; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
+
+.myp-section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 0 8px;
+    border-bottom: 2px solid rgba(90,17,39,0.1);
+}
+.myp-section-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; color: #fff; flex-shrink: 0;
+}
+.myp-section-icon.current { background: linear-gradient(135deg, #5A1127, #7A1835); }
+.myp-section-icon.prev    { background: linear-gradient(135deg, #C2944A, #a87736); }
+.myp-section-title { font-family: 'Cinzel', serif; font-size: 1.4rem; color: #5A1127; margin: 0; }
+.myp-section-desc { font-family: 'Poppins', sans-serif; font-size: 0.83rem; color: #888; margin: 2px 0 0; }
+
+.myp-order-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid rgba(194,148,74,0.15);
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+.myp-order-card:hover { box-shadow: 0 8px 32px rgba(90,17,39,0.12); }
+
+.myp-order-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 24px;
+}
+.myp-order-header.current { background: linear-gradient(to right, #5A1127, #7A1835); }
+.myp-order-header.prev    { background: linear-gradient(to right, #2c2c2c, #444); }
+
+.myp-order-meta { display: flex; flex-direction: column; }
+.myp-meta-label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+.myp-meta-val { font-family: 'Cinzel', serif; font-size: 1rem; color: #fff; font-weight: 700; }
+.myp-meta-val.gold { color: #C2944A; }
+.myp-divider-v { width: 1px; height: 36px; background: rgba(255,255,255,0.2); }
+
+.myp-badge { border-radius: 50px; padding: 5px 14px; font-size: 0.8rem; font-family: 'Poppins', sans-serif; font-weight: 600; border: 1px solid transparent; }
+.myp-badge.pending   { background: rgba(240,173,78,0.2); color: #f0ad4e; border-color: rgba(240,173,78,0.4); }
+.myp-badge.processing{ background: rgba(23,162,184,0.2); color: #17a2b8; border-color: rgba(23,162,184,0.4); }
+.myp-badge.shipped   { background: rgba(0,123,255,0.2);  color: #007bff; border-color: rgba(0,123,255,0.4); }
+.myp-badge.delivered { background: rgba(40,167,69,0.2);  color: #28a745; border-color: rgba(40,167,69,0.4); }
+.myp-badge.cancelled { background: rgba(220,53,69,0.2);  color: #dc3545; border-color: rgba(220,53,69,0.4); }
+
+.myp-toggle-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; border-radius: 8px;
+    padding: 6px 14px; font-size: 0.8rem;
+    cursor: pointer; font-family: 'Poppins', sans-serif;
+    transition: background 0.2s;
+}
+.myp-toggle-btn:hover { background: rgba(255,255,255,0.22); }
+.myp-toggle-btn.ghost { background: rgba(255,255,255,0.08); }
+
+.myp-order-body { padding: 24px; }
+
+.myp-timeline-label { font-family: 'Poppins', sans-serif; font-size: 0.78rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+.myp-steps { display: flex; align-items: flex-start; justify-content: space-between; position: relative; }
+.myp-step-track { position: absolute; top: 18px; left: 10%; right: 10%; height: 3px; background: #eee; z-index: 0; }
+.myp-step-fill { height: 100%; background: linear-gradient(to right, #5A1127, #C2944A); transition: width 1s ease; }
+.myp-step { text-align: center; z-index: 2; flex: 1; }
+.myp-step small { font-family: 'Poppins', sans-serif; font-size: 0.72rem; color: #555; display: block; margin-top: 6px; }
+.myp-step-dot { width: 36px; height: 36px; border-radius: 50%; background: #eee; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #bbb; transition: background 0.3s; }
+.myp-step-dot.active { background: #5A1127; color: #fff; }
+.myp-step-dot.done   { background: #28a745; color: #fff; }
+
+.myp-items-label { font-family: 'Poppins', sans-serif; font-size: 0.78rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.myp-product-item { display: flex; align-items: center; gap: 12px; background: #FAF7F2; border-radius: 10px; padding: 12px; border: 1px solid rgba(194,148,74,0.15); transition: border-color 0.2s; }
+.myp-product-item:hover { border-color: rgba(194,148,74,0.4); }
+.myp-product-img { width: 64px; height: 64px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #e9e9e9; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #ccc; }
+.myp-product-img img { width: 100%; height: 100%; object-fit: cover; }
+.myp-product-info { flex: 1; min-width: 0; }
+.myp-product-name { font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.myp-product-qty { font-family: 'Poppins', sans-serif; font-size: 0.78rem; color: #888; margin-top: 2px; }
+.myp-product-price { font-family: 'Poppins', sans-serif; font-size: 0.85rem; color: #5A1127; font-weight: 700; margin-top: 3px; }
+
+.myp-info-box { background: #FAF7F2; border-radius: 10px; padding: 16px; border: 1px solid rgba(194,148,74,0.15); height: 100%; }
+.myp-info-label { font-family: 'Poppins', sans-serif; font-size: 0.78rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.myp-info-text { font-family: 'Poppins', sans-serif; font-size: 0.88rem; color: #333; margin: 0; line-height: 1.7; }
+.myp-summary-row { display: flex; justify-content: space-between; font-family: 'Poppins', sans-serif; font-size: 0.88rem; color: #333; margin-bottom: 6px; }
+.myp-summary-row span:first-child { color: #777; }
+.myp-summary-row span:last-child { font-weight: 600; }
+.myp-summary-row.total span { font-weight: 700; color: #5A1127; font-size: 1rem; }
+.myp-summary-divider { height: 1px; background: rgba(194,148,74,0.2); margin: 8px 0; }
+
+.myp-whatsapp-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: #25D366; color: #fff; border-radius: 50px;
+    padding: 9px 20px; font-size: 0.85rem; font-weight: 600;
+    font-family: 'Poppins', sans-serif; text-decoration: none; transition: all 0.2s;
+}
+.myp-whatsapp-btn:hover { background: #128C7E; transform: translateY(-2px); color: #fff; }
+
+.myp-tab {
+    background: #fff; border: 1.5px solid rgba(90,17,39,0.2); color: #5A1127;
+    border-radius: 50px; padding: 8px 20px; font-size: 0.85rem;
+    font-family: 'Poppins', sans-serif; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.myp-tab:hover, .myp-tab.active { background: #5A1127; color: #fff; border-color: #5A1127; }
+
+.myp-empty {
+    text-align: center; padding: 40px 20px;
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid rgba(194,148,74,0.12);
+}
+.myp-empty-icon {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: rgba(90,17,39,0.06);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 2.2rem; color: #5A1127;
+}
+.myp-empty h5 { font-family: 'Cinzel', serif; color: #5A1127; margin-bottom: 8px; }
+.myp-empty p { font-family: 'Poppins', sans-serif; color: #888; font-size: 0.9rem; max-width: 340px; margin: 0 auto 20px; }
+.myp-shop-btn {
+    display: inline-flex; align-items: center;
+    background: #5A1127; color: #fff; border-radius: 50px;
+    padding: 10px 28px; font-family: 'Poppins', sans-serif;
+    font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: background 0.2s;
+}
+.myp-shop-btn:hover { background: #C2944A; color: #fff; }
+
+.prev-order-card.hidden { display: none !important; }
+</style>
+
+<script>
+function toggleCard(bodyId, iconId) {
+    const body = document.getElementById(bodyId);
+    const icon = document.getElementById(iconId);
+    if (body.style.display === 'none') {
+        body.style.display = 'block';
+        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+    } else {
+        body.style.display = 'none';
+        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+    }
+}
+
+function filterPrev(status, btn) {
+    document.querySelectorAll('.myp-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.prev-order-card').forEach(card => {
+        if (status === 'all' || card.dataset.status === status) {
+            card.classList.remove('hidden');
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+}
+</script>
+
+{% endblock %}

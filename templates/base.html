@@ -65,6 +65,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'orders:my_products' %}"><i class="fas fa-box me-1"></i> My Products</a></li>
                             <li><a class="dropdown-item" href="{% url 'orders:order_history' %}">Orders</a></li>
                             {% if user.is_superuser %}
                             <li><a class="dropdown-item" href="/admin/">Admin Panel</a></li>

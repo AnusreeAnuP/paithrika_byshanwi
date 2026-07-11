@@ -49,3 +49,13 @@ def checkout(request):
 def order_history(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'orders/order_history.html', {'orders': orders})
+
+@login_required
+def my_products(request):
+    all_orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    current_orders = all_orders.filter(status__in=['Pending', 'Processing', 'Shipped'])
+    previous_orders = all_orders.filter(status__in=['Delivered', 'Cancelled'])
+    return render(request, 'orders/my_products.html', {
+        'current_orders': current_orders,
+        'previous_orders': previous_orders,
+    })
