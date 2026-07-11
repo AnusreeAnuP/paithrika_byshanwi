@@ -12,7 +12,11 @@ __pycache__/
 # Django local DB and media uploads
 db.sqlite3
 db.sqlite3-journal
-media/
+
+# Ignore everything in media EXCEPT product images
+media/*
+!media/products/
+media/products/.gitkeep
 
 # Generated local docs (optional to exclude, but keeps repo clean)
 Project_Report_Paithrika.docx
