@@ -7,6 +7,8 @@ def categories(request):
     """
     return {
         'all_categories': Category.objects.all(),
+        'paithrika_categories': Category.objects.filter(brand='paithrika'),
+        'dremora_categories': Category.objects.filter(brand='dremora'),
         'whatsapp_number': getattr(settings, 'WHATSAPP_NUMBER', '918086297803')
     }
 

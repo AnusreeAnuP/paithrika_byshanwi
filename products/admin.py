@@ -4,7 +4,8 @@ from .models import Category, Product
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
-    list_display = ('name', 'slug')
+    list_display = ('name', 'slug', 'brand')
+    list_filter = ('brand',)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

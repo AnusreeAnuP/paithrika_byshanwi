@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dremora — Custom Stitching Unit{% endblock %}
+
+{% block content %}
+<!-- Dremora Hero -->
+<section class="dremora-hero">
+    <div class="container">
+        <div class="dremora-hero-content">
+            <span class="dremora-hero-badge">✂️ Stitching Unit</span>
+            <h1 class="dremora-hero-title">DREMORA</h1>
+            <p class="dremora-hero-subtitle">Where fabric meets artistry. Custom-stitched silhouettes designed to define your style.</p>
+            <div class="dremora-hero-divider">
+                <span></span>
+                <i class="fas fa-scissors"></i>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Collections -->
+<section class="dremora-collections-section">
+    <div class="container py-5">
+        <h2 class="dremora-section-heading text-center">Our Collections</h2>
+        <div class="dremora-heading-line"></div>
+        <div class="row g-4 mt-4 justify-content-center">
+            {% for category in dremora_categories %}
+            <div class="col-lg-4 col-md-6">
+                <a href="{% url 'products:category_detail' category.slug %}" class="text-decoration-none">
+                    <div class="dremora-collection-card">
+                        <div class="dremora-collection-icon">
+                            {% if 'customis' in category.name|lower or 'custom' in category.name|lower %}
+                            <i class="fas fa-drafting-compass"></i>
+                            {% elif 'churidhar' in category.name|lower %}
+                            <i class="fas fa-female"></i>
+                            {% elif 'coat' in category.name|lower %}
+                            <i class="fas fa-user-tie"></i>
+                            {% elif 'jeans' in category.name|lower %}
+                            <i class="fas fa-tshirt"></i>
+                            {% elif 'top' in category.name|lower %}
+                            <i class="fas fa-vest-patches"></i>
+                            {% else %}
+                            <i class="fas fa-cut"></i>
+                            {% endif %}
+                        </div>
+                        <h3 class="dremora-collection-name">{{ category.name }}</h3>
+                        <p class="dremora-collection-desc">{{ category.description|default:"Explore our curated collection" }}</p>
+                        <span class="dremora-collection-link">Shop Now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <!-- Placeholder cards when no categories exist yet -->
+            <div class="col-lg-4 col-md-6">
+                <div class="dremora-collection-card">
+                    <div class="dremora-collection-icon"><i class="fas fa-drafting-compass"></i></div>
+                    <h3 class="dremora-collection-name">Customised Designs</h3>
+                    <p class="dremora-collection-desc">Tailored to your imagination — unique pieces made just for you.</p>
+                    <span class="dremora-collection-link">Coming Soon</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="dremora-collection-card">
+                    <div class="dremora-collection-icon"><i class="fas fa-female"></i></div>
+                    <h3 class="dremora-collection-name">Churidhar Sets</h3>
+                    <p class="dremora-collection-desc">Classic elegance meets modern comfort in every stitch.</p>
+                    <span class="dremora-collection-link">Coming Soon</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="dremora-collection-card">
+                    <div class="dremora-collection-icon"><i class="fas fa-user-tie"></i></div>
+                    <h3 class="dremora-collection-name">Coat Sets</h3>
+                    <p class="dremora-collection-desc">Structured sophistication for the bold and refined.</p>
+                    <span class="dremora-collection-link">Coming Soon</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="dremora-collection-card">
+                    <div class="dremora-collection-icon"><i class="fas fa-tshirt"></i></div>
+                    <h3 class="dremora-collection-name">Comfy Jeans</h3>
+                    <p class="dremora-collection-desc">Everyday essentials designed for all-day comfort.</p>
+                    <span class="dremora-collection-link">Coming Soon</span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="dremora-collection-card">
+                    <div class="dremora-collection-icon"><i class="fas fa-vest-patches"></i></div>
+                    <h3 class="dremora-collection-name">Chic Short Tops</h3>
+                    <p class="dremora-collection-desc">Trendy, effortless, and perfectly cut for any occasion.</p>
+                    <span class="dremora-collection-link">Coming Soon</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="dremora-products-section">
+    <div class="container py-5">
+        <h2 class="dremora-section-heading text-center">Featured Pieces</h2>
+        <div class="dremora-heading-line"></div>
+        <div class="row g-4 mt-4">
+            {% for product in featured_products %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="dremora-product-card">
+                    <div class="dremora-product-img">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                        <div class="dremora-product-placeholder">
+                            <i class="fas fa-image fa-3x"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="dremora-product-info">
+                        <span class="dremora-product-category">{{ product.category.name }}</span>
+                        <h3 class="dremora-product-name"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h3>
+                        <p class="dremora-product-price">₹{{ product.price }}</p>
+                        <a href="https://wa.me/{{ whatsapp_number }}?text=Hi%20Dremora%2C%20I%20would%20like%20to%20enquire%20about%20{{ product.name|urlencode }}." target="_blank" class="btn text-white w-100" style="background-color: #25D366; border: none; border-radius: 8px; font-weight: 600; font-size: 0.85rem; padding: 8px 16px;">
+                            <i class="fab fa-whatsapp me-1"></i> Enquire Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Dremora CTA -->
+<section class="dremora-cta-section">
+    <div class="container py-5 text-center">
+        <h2 class="dremora-cta-title">Have a Design in Mind?</h2>
+        <p class="dremora-cta-text">Share your vision with us. We'll stitch it to perfection.</p>
+        <a href="https://wa.me/{{ whatsapp_number }}?text=Hi%20Dremora,%20I%20have%20a%20custom%20stitching%20request!" class="btn dremora-cta-btn" target="_blank">
+            <i class="fab fa-whatsapp me-2"></i> Chat with Us
+        </a>
+    </div>
+</section>
+{% endblock %}
