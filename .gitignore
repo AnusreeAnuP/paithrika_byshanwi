@@ -13,9 +13,10 @@ __pycache__/
 db.sqlite3
 db.sqlite3-journal
 
-# Ignore everything in media EXCEPT product images
+# Ignore everything in media EXCEPT product and category images
 media/*
 !media/products/
+!media/categories/
 media/products/.gitkeep
 
 # Generated local docs (optional to exclude, but keeps repo clean)
