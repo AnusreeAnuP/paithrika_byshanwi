@@ -1,10 +1,15 @@
 from django.db import models
 
 class Category(models.Model):
+    BRAND_CHOICES = [
+        ('paithrika', 'Paithrika'),
+        ('dremora', 'Dremora'),
+    ]
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
-    
+    brand = models.CharField(max_length=20, choices=BRAND_CHOICES, default='paithrika')
+
     class Meta:
         verbose_name_plural = 'Categories'
 

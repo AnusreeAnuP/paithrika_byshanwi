@@ -36,7 +36,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="/">Home</a>
                     </li>
-                    {% for cat in all_categories %}
+                    {% for cat in paithrika_categories %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'products:category_detail' cat.slug %}">{{ cat.name }}</a>
                     </li>
@@ -45,6 +45,21 @@
                     <li class="nav-item"><a class="nav-link" href="#">Kurtis</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Salwar Suits</a></li>
                     {% endfor %}
+                    <!-- Dremora Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'products:dremora_home' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ✂️ Dremora
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item fw-bold" href="{% url 'products:dremora_home' %}">View All</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            {% for cat in dremora_categories %}
+                            <li><a class="dropdown-item" href="{% url 'products:category_detail' cat.slug %}">{{ cat.name }}</a></li>
+                            {% empty %}
+                            <li><a class="dropdown-item text-muted" href="{% url 'products:dremora_home' %}">Coming Soon</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item me-2">
