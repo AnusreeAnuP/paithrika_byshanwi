@@ -24,7 +24,12 @@ def seed_superuser():
         )
         print("Admin user created successfully.")
     else:
-        print(f"Admin user '{username}' already exists. Skipping.")
+        user = User.objects.get(username=username)
+        user.set_password(password)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+        print(f"Admin user '{username}' already exists. Password has been reset.")
 
 if __name__ == '__main__':
     seed_superuser()
