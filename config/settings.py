@@ -197,6 +197,11 @@ if _CLOUDINARY_URL:
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     }
 
+# Backward-compat shims: django-cloudinary-storage 0.3.0 still reads these
+# even though Django 5.1+ removed them in favour of STORAGES dict.
+STATICFILES_STORAGE = STORAGES['staticfiles']['BACKEND']
+DEFAULT_FILE_STORAGE = STORAGES['default']['BACKEND']
+
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'https://*.koyeb.app']
 
 # Default primary key field type
