@@ -46,14 +46,24 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com', '.koyeb.app']
 
 # Application definition
 
+# Cloudinary must be added BEFORE django.contrib.staticfiles
+_CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+]
+
+# cloudinary_storage must appear before staticfiles
+if _CLOUDINARY_URL:
+    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
+
+INSTALLED_APPS += [
     'django.contrib.staticfiles',
-    
+
     # Local Apps
     'accounts',
     'products',
@@ -172,8 +182,17 @@ STORAGES = {
     },
 }
 
-if os.environ.get('CLOUDINARY_URL'):
-    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
+if _CLOUDINARY_URL:
+    import cloudinary
+    import urllib.parse
+    # Parse the CLOUDINARY_URL: cloudinary://api_key:api_secret@cloud_name
+    parsed = urllib.parse.urlparse(_CLOUDINARY_URL)
+    cloudinary.config(
+        cloud_name=parsed.hostname,
+        api_key=parsed.username,
+        api_secret=parsed.password,
+        secure=True,
+    )
     STORAGES['default'] = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     }
