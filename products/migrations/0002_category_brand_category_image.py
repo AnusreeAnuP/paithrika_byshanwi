@@ -2,6 +2,18 @@
 
 from django.db import migrations, models
 
+def add_fields_safely(apps, schema_editor):
+    from django.db import connection
+    with connection.cursor() as cursor:
+        # Check brand
+        cursor.execute("SELECT 1 FROM information_schema.columns WHERE table_name='products_category' AND column_name='brand'")
+        if not cursor.fetchone():
+            cursor.execute("ALTER TABLE products_category ADD COLUMN brand varchar(20) DEFAULT 'paithrika' NOT NULL;")
+        
+        # Check image
+        cursor.execute("SELECT 1 FROM information_schema.columns WHERE table_name='products_category' AND column_name='image'")
+        if not cursor.fetchone():
+            cursor.execute("ALTER TABLE products_category ADD COLUMN image varchar(100) NULL;")
 
 class Migration(migrations.Migration):
 
@@ -10,14 +22,21 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='category',
-            name='brand',
-            field=models.CharField(choices=[('paithrika', 'Paithrika'), ('dremora', 'Dremora')], default='paithrika', max_length=20),
-        ),
-        migrations.AddField(
-            model_name='category',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='categories/'),
-        ),
+        migrations.SeparateDatabaseAndState(
+            database_operations=[
+                migrations.RunPython(add_fields_safely, reverse_code=migrations.RunPython.noop),
+            ],
+            state_operations=[
+                migrations.AddField(
+                    model_name='category',
+                    name='brand',
+                    field=models.CharField(choices=[('paithrika', 'Paithrika'), ('dremora', 'Dremora')], default='paithrika', max_length=20),
+                ),
+                migrations.AddField(
+                    model_name='category',
+                    name='image',
+                    field=models.ImageField(blank=True, null=True, upload_to='categories/'),
+                ),
+            ]
+        )
     ]
