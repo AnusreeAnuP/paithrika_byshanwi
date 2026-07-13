@@ -28,7 +28,7 @@
         </div>
         <div class="row g-4 justify-content-center">
             
-            {% for category in paithrika_categories %}
+            {% for category in categories %}
             <div class="col-md-3 col-sm-6 text-center">
                 <a href="{% url 'products:category_detail' category.slug %}" class="text-decoration-none">
                     <div class="rounded-circle mx-auto mb-3 category-circle overflow-hidden d-flex align-items-center justify-content-center" style="width: 150px; height: 150px; border: 2px solid var(--secondary-color);">
@@ -218,8 +218,6 @@
         </div>
     </div>
 </section>
-
-
 
 <!-- Register CTA Section -->
 {% if not user.is_authenticated %}

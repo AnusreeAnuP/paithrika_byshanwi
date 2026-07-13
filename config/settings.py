@@ -46,24 +46,14 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com', '.koyeb.app']
 
 # Application definition
 
-# Cloudinary must be added BEFORE django.contrib.staticfiles
-_CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-]
-
-# cloudinary_storage must appear before staticfiles
-if _CLOUDINARY_URL:
-    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
-
-INSTALLED_APPS += [
     'django.contrib.staticfiles',
-
+    
     # Local Apps
     'accounts',
     'products',
@@ -171,36 +161,22 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Django 5.1+ uses STORAGES dict (DEFAULT_FILE_STORAGE & STATICFILES_STORAGE removed)
-# Note: whitenoise storage backends are incompatible with Django 6.x collectstatic.
-# The whitenoise MIDDLEWARE still serves static files efficiently without a custom storage.
 STORAGES = {
     'default': {
         'BACKEND': 'django.core.files.storage.FileSystemStorage',
     },
     'staticfiles': {
-        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+        if WHITENOISE_AVAILABLE
+        else 'django.contrib.staticfiles.storage.StaticFilesStorage',
     },
 }
 
-if _CLOUDINARY_URL:
-    import cloudinary
-    import urllib.parse
-    # Parse the CLOUDINARY_URL: cloudinary://api_key:api_secret@cloud_name
-    parsed = urllib.parse.urlparse(_CLOUDINARY_URL)
-    cloudinary.config(
-        cloud_name=parsed.hostname,
-        api_key=parsed.username,
-        api_secret=parsed.password,
-        secure=True,
-    )
+if os.environ.get('CLOUDINARY_URL'):
+    INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
     STORAGES['default'] = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     }
-
-# Backward-compat shims: django-cloudinary-storage 0.3.0 still reads these
-# even though Django 5.1+ removed them in favour of STORAGES dict.
-STATICFILES_STORAGE = STORAGES['staticfiles']['BACKEND']
-DEFAULT_FILE_STORAGE = STORAGES['default']['BACKEND']
 
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com', 'https://*.koyeb.app']
 

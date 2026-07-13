@@ -5,11 +5,11 @@ from .models import Product, Category
 def home(request):
     new_arrivals = Product.objects.filter(is_available=True, is_new_arrival=True)[:8]
     best_sellers = Product.objects.filter(is_available=True, is_best_seller=True)[:4]
-    paithrika_categories = Category.objects.filter(brand='paithrika')
+    categories = Category.objects.all()
     context = {
         'new_arrivals': new_arrivals,
         'best_sellers': best_sellers,
-        'paithrika_categories': paithrika_categories,
+        'categories': categories,
     }
     return render(request, 'home.html', context)
 
@@ -48,16 +48,3 @@ def privacy_policy(request):
 
 def terms_conditions(request):
     return render(request, 'pages/terms_conditions.html')
-
-def dremora_home(request):
-    """Landing page for Dremora stitching unit."""
-    dremora_categories = Category.objects.filter(brand='dremora')
-    # Collect up to 4 featured products across all Dremora categories
-    featured_products = Product.objects.filter(
-        category__brand='dremora', is_available=True
-    ).order_by('-created_at')[:8]
-    context = {
-        'dremora_categories': dremora_categories,
-        'featured_products': featured_products,
-    }
-    return render(request, 'dremora/home.html', context)
