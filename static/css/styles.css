@@ -64,13 +64,8 @@ color:var(--secondary-color)!important;
 .hero-section{
     background: var(--primary-color);
     padding: 120px 0;
-    url("../images/floral-bg.jpg");
-    background-size: cover;
-    background-position: center;
     text-align: center;
     border-bottom: 3px solid var(--secondary-color);
-
-
 }
 .hero-title {
     font-family: 'Cinzel', serif;
