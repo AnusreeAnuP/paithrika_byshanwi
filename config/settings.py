@@ -171,14 +171,14 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Django 5.1+ uses STORAGES dict (DEFAULT_FILE_STORAGE & STATICFILES_STORAGE removed)
+# Note: whitenoise storage backends are incompatible with Django 6.x collectstatic.
+# The whitenoise MIDDLEWARE still serves static files efficiently without a custom storage.
 STORAGES = {
     'default': {
         'BACKEND': 'django.core.files.storage.FileSystemStorage',
     },
     'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'
-        if WHITENOISE_AVAILABLE
-        else 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
     },
 }
 
