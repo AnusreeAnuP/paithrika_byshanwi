@@ -219,52 +219,7 @@
     </div>
 </section>
 
-<!-- Dremora Spotlight Section -->
-<section class="dremora-spotlight-section">
-    <div class="container py-5">
-        <div class="row align-items-center">
-            <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
-                <span class="dremora-badge">✂️ Stitching Unit</span>
-                <h2 class="dremora-spotlight-title">Dremora</h2>
-                <p class="dremora-spotlight-subtitle">Custom stitching, curated style. From churidhar sets to chic short tops — crafted with precision and passion.</p>
-                <div class="dremora-collections-preview">
-                    {% for cat in dremora_categories %}
-                    <a href="{% url 'products:category_detail' cat.slug %}" class="dremora-tag">{{ cat.name }}</a>
-                    {% empty %}
-                    <span class="dremora-tag">Customised Designs</span>
-                    <span class="dremora-tag">Churidhar Sets</span>
-                    <span class="dremora-tag">Coat Sets</span>
-                    <span class="dremora-tag">Comfy Jeans</span>
-                    <span class="dremora-tag">Chic Short Tops</span>
-                    {% endfor %}
-                </div>
-                <a href="{% url 'products:dremora_home' %}" class="btn dremora-explore-btn mt-3">
-                    Explore Dremora <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-            <div class="col-lg-6">
-                <div class="dremora-visual-grid">
-                    <div class="dremora-grid-item dremora-grid-large">
-                        <i class="fas fa-cut fa-3x"></i>
-                        <span>Custom Designs</span>
-                    </div>
-                    <div class="dremora-grid-item">
-                        <i class="fas fa-tshirt fa-2x"></i>
-                        <span>Tops</span>
-                    </div>
-                    <div class="dremora-grid-item">
-                        <i class="fas fa-vest fa-2x"></i>
-                        <span>Coat Sets</span>
-                    </div>
-                    <div class="dremora-grid-item">
-                        <i class="fas fa-ruler fa-2x"></i>
-                        <span>Churidhar</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Register CTA Section -->
 {% if not user.is_authenticated %}
