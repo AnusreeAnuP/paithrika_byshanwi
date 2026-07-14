@@ -20,7 +20,7 @@
             <div class="col-md-6">
                 <div class="position-relative rounded shadow-sm border overflow-hidden" style="height: 500px; background-color: #f8f9fa;">
                     {% if product.image %}
-                    <img src="{{ product.image.url }}" class="w-100 h-100" style="object-fit: cover; display: block;" alt="{{ product.name }}">
+                    <img id="mainProductImage" src="{{ product.image.url }}" class="w-100 h-100" style="object-fit: cover; display: block;" alt="{{ product.name }}">
                     {% else %}
                     <div class="d-flex justify-content-center align-items-center w-100 h-100" style="background-color: #f8f9fa;">
                         <i class="fas fa-image fa-5x text-muted opacity-50"></i>
@@ -43,6 +43,22 @@
                         <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i> Share on WhatsApp
                     </a>
                 </div>
+
+                <!-- Thumbnails Gallery -->
+                {% if product.images.all %}
+                <div class="d-flex gap-2 mt-3 overflow-auto pb-2" style="white-space: nowrap;">
+                    {% if product.image %}
+                    <div class="cursor-pointer flex-shrink-0" onclick="document.getElementById('mainProductImage').src='{{ product.image.url }}'">
+                        <img src="{{ product.image.url }}" class="img-thumbnail rounded" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border-color: #5A1127;" alt="{{ product.name }}">
+                    </div>
+                    {% endif %}
+                    {% for img in product.images.all %}
+                    <div class="cursor-pointer flex-shrink-0" onclick="document.getElementById('mainProductImage').src='{{ img.image.url }}'">
+                        <img src="{{ img.image.url }}" class="img-thumbnail rounded" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border-color: #5A1127;" alt="{{ product.name }} image">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
 
             <!-- Product Info -->
