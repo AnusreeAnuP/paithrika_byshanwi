@@ -156,12 +156,14 @@
                             </div>
                         </a>
                         {% endif %}
-                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-2" style="z-index: 10;">
-                            <span class="badge bg-danger">New</span>
-                            <a href="{% url 'wishlist:wishlist_add' product.id %}" class="btn btn-light rounded-circle shadow-sm p-2 text-danger d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" title="Add to Wishlist">
+                        <div class="position-absolute top-0 start-0 p-2" style="z-index: 10;">
+                            <a href="{% url 'wishlist:wishlist_add' product.id %}" class="text-danger" title="Add to Wishlist" style="font-size: 1.2rem;">
                                 <i class="fas fa-heart"></i>
                             </a>
-                            <button type="button" class="btn btn-light rounded-circle shadow-sm p-2 text-primary d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}" title="Quick View">
+                        </div>
+                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-1" style="z-index: 10;">
+                            <span class="badge bg-danger">New</span>
+                            <button type="button" class="btn btn-link p-0 text-dark" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}" title="Quick View" style="font-size: 1.2rem;">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
