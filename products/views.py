@@ -19,7 +19,7 @@ def category_detail(request, category_slug):
     return render(request, 'products/category_detail.html', {'category': category, 'products': products})
 
 def product_detail(request, product_slug):
-    product = get_object_or_404(Product, slug=product_slug, is_available=True)
+    product = get_object_or_404(Product.objects.prefetch_related('images'), slug=product_slug, is_available=True)
     related_products = Product.objects.filter(category=product.category, is_available=True).exclude(id=product.id)[:4]
     return render(request, 'products/product_detail.html', {'product': product, 'related_products': related_products})
 

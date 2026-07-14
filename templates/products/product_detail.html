@@ -18,13 +18,38 @@
         <div class="row g-5">
             <!-- Product Image -->
             <div class="col-md-6">
-                <div class="position-relative rounded shadow-sm border overflow-hidden" style="height: 500px; background-color: #f8f9fa;">
-                    {% if product.image %}
-                    <img id="mainProductImage" src="{{ product.image.url }}" class="w-100 h-100" style="object-fit: cover; display: block;" alt="{{ product.name }}">
-                    {% else %}
-                    <div class="d-flex justify-content-center align-items-center w-100 h-100" style="background-color: #f8f9fa;">
-                        <i class="fas fa-image fa-5x text-muted opacity-50"></i>
+                <div id="productImageCarousel" class="carousel slide position-relative rounded shadow-sm border overflow-hidden" data-bs-ride="false" style="height: 500px; background-color: #f8f9fa;">
+                    <div class="carousel-inner h-100">
+                        {% if product.image %}
+                        <div class="carousel-item active h-100">
+                            <img src="{{ product.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ product.name }}">
+                        </div>
+                        {% endif %}
+                        
+                        {% for img in product.images.all %}
+                        <div class="carousel-item {% if not product.image and forloop.first %}active{% endif %} h-100">
+                            <img src="{{ img.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ product.name }} image">
+                        </div>
+                        {% endfor %}
+
+                        {% if not product.image and not product.images.exists %}
+                        <div class="carousel-item active h-100">
+                            <div class="d-flex justify-content-center align-items-center w-100 h-100" style="background-color: #f8f9fa;">
+                                <i class="fas fa-image fa-5x text-muted opacity-50"></i>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
+                    
+                    {% if product.images.exists %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productImageCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.5); border-radius: 50%; padding: 20px;"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productImageCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.5); border-radius: 50%; padding: 20px;"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                     {% endif %}
 
                     <!-- Floating WhatsApp Share Button on Image -->
@@ -45,15 +70,15 @@
                 </div>
 
                 <!-- Thumbnails Gallery -->
-                {% if product.images.all %}
+                {% if product.images.exists %}
                 <div class="d-flex gap-2 mt-3 overflow-auto pb-2" style="white-space: nowrap;">
                     {% if product.image %}
-                    <div class="cursor-pointer flex-shrink-0" onclick="document.getElementById('mainProductImage').src='{{ product.image.url }}'">
+                    <div class="cursor-pointer flex-shrink-0" data-bs-target="#productImageCarousel" data-bs-slide-to="0">
                         <img src="{{ product.image.url }}" class="img-thumbnail rounded" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border-color: #5A1127;" alt="{{ product.name }}">
                     </div>
                     {% endif %}
                     {% for img in product.images.all %}
-                    <div class="cursor-pointer flex-shrink-0" onclick="document.getElementById('mainProductImage').src='{{ img.image.url }}'">
+                    <div class="cursor-pointer flex-shrink-0" data-bs-target="#productImageCarousel" data-bs-slide-to="{% if product.image %}{{ forloop.counter }}{% else %}{{ forloop.counter0 }}{% endif %}">
                         <img src="{{ img.image.url }}" class="img-thumbnail rounded" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border-color: #5A1127;" alt="{{ product.name }} image">
                     </div>
                     {% endfor %}
