@@ -156,17 +156,55 @@
                             </div>
                         </a>
                         {% endif %}
-                        <div class="position-absolute top-0 end-0 p-2" style="z-index: 10;">
+                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-2" style="z-index: 10;">
                             <span class="badge bg-danger">New</span>
+                            <a href="{% url 'wishlist:wishlist_add' product.id %}" class="btn btn-light rounded-circle shadow-sm p-2 text-danger d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" title="Add to Wishlist">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                            <button type="button" class="btn btn-light rounded-circle shadow-sm p-2 text-primary d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}" title="Quick View">
+                                <i class="fas fa-eye"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="product-details card-body">
-                        
-                        <h3 class="product-title h6"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h3>
-                        <p class="product-price mb-2">₹{{ product.price }}</p>
-                        <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-outline-dark btn-sm w-100"><i class="fas fa-cart-plus me-1"></i> Add to Cart</a>
+                    <div class="product-details card-body text-center">
+                        <h3 class="product-title h6 mb-2">
+                            <a href="{% url 'products:product_detail' product.slug %}" class="text-dark text-decoration-none">{{ product.name }}</a>
+                        </h3>
+                        <p class="product-price mb-3">₹{{ product.price }}</p>
+                        <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-outline-dark btn-sm w-100">
+                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                        </a>
                     </div>
                 </div>
+            </div>
+
+            <!-- Quick View Modal -->
+            <div class="modal fade" id="quickViewModal{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalLabel{{ product.id }}" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body pt-0 pb-4">
+                    <div class="row g-4">
+                        <div class="col-md-6 text-center">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" style="max-height: 400px; object-fit: contain;" alt="{{ product.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 d-flex flex-column justify-content-center">
+                            <h3 id="quickViewModalLabel{{ product.id }}">{{ product.name }}</h3>
+                            <h4 class="text-primary mb-3">₹{{ product.price }}</h4>
+                            <p class="text-muted">{{ product.description|truncatewords:40 }}</p>
+                            <div class="d-flex gap-2 mt-4">
+                                <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-primary-custom flex-grow-1"><i class="fas fa-cart-plus me-2"></i> Add to Cart</a>
+                                <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-secondary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             {% empty %}
             <!-- Demo dummy product if DB is empty -->
@@ -358,17 +396,57 @@
                             </div>
                         </a>
                         {% endif %}
-                        <div class="position-absolute top-0 start-0 p-2" style="z-index: 10;">
+                        <div class="position-absolute top-0 start-0 p-2 d-flex flex-column gap-2" style="z-index: 10;">
                             <span class="badge text-white" style="background-color: var(--secondary-color);">Best Seller</span>
                         </div>
+                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-2" style="z-index: 10;">
+                            <a href="{% url 'wishlist:wishlist_add' product.id %}" class="btn btn-light rounded-circle shadow-sm p-2 text-danger d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" title="Add to Wishlist">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                            <button type="button" class="btn btn-light rounded-circle shadow-sm p-2 text-primary d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}" title="Quick View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="product-details card-body">
-                        
-                        <h3 class="product-title h6"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h3>
-                        <p class="product-price mb-2">₹{{ product.price }}</p>
-                        <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-outline-dark btn-sm w-100"><i class="fas fa-cart-plus me-1"></i> Add to Cart</a>
+                    <div class="product-details card-body text-center">
+                        <h3 class="product-title h6 mb-2">
+                            <a href="{% url 'products:product_detail' product.slug %}" class="text-dark text-decoration-none">{{ product.name }}</a>
+                        </h3>
+                        <p class="product-price mb-3">₹{{ product.price }}</p>
+                        <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-outline-dark btn-sm w-100">
+                            <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                        </a>
                     </div>
                 </div>
+            </div>
+
+            <!-- Quick View Modal (Best Sellers) -->
+            <div class="modal fade" id="quickViewModal{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalLabel{{ product.id }}" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body pt-0 pb-4">
+                    <div class="row g-4">
+                        <div class="col-md-6 text-center">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" style="max-height: 400px; object-fit: contain;" alt="{{ product.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 d-flex flex-column justify-content-center">
+                            <h3 id="quickViewModalLabel{{ product.id }}">{{ product.name }}</h3>
+                            <h4 class="text-primary mb-3">₹{{ product.price }}</h4>
+                            <p class="text-muted">{{ product.description|truncatewords:40 }}</p>
+                            <div class="d-flex gap-2 mt-4">
+                                <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-primary-custom flex-grow-1"><i class="fas fa-cart-plus me-2"></i> Add to Cart</a>
+                                <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-secondary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             {% endfor %}
         </div>

@@ -65,6 +65,12 @@
                             {% if product.has_offer %}
                             <span class="badge bg-warning text-dark">Offer</span>
                             {% endif %}
+                            <a href="{% url 'wishlist:wishlist_add' product.id %}" class="btn btn-light rounded-circle shadow-sm p-2 text-danger d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" title="Add to Wishlist">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                            <button type="button" class="btn btn-light rounded-circle shadow-sm p-2 text-primary d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" data-bs-toggle="modal" data-bs-target="#quickViewCat{{ product.id }}" title="Quick View">
+                                <i class="fas fa-eye"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="product-details card-body text-center">
@@ -83,6 +89,41 @@
                         {% endif %}
                     </div>
                 </div>
+            </div>
+
+            <!-- Quick View Modal -->
+            <div class="modal fade" id="quickViewCat{{ product.id }}" tabindex="-1" aria-labelledby="quickViewCatLabel{{ product.id }}" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body pt-0 pb-4">
+                    <div class="row g-4">
+                        <div class="col-md-6 text-center">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" style="max-height: 400px; object-fit: contain;" alt="{{ product.name }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 d-flex flex-column justify-content-center">
+                            <h3 id="quickViewCatLabel{{ product.id }}">{{ product.name }}</h3>
+                            <h4 class="text-primary mb-3">₹{{ product.price }}</h4>
+                            <p class="text-muted">{{ product.description|truncatewords:40 }}</p>
+                            <div class="d-flex gap-2 mt-4">
+                                {% if category.brand == 'dremora' %}
+                                <a href="https://wa.me/{{ whatsapp_number }}?text=Hi%20Paithrika%2C%20I%20would%20like%20to%20enquire%20about%20{{ product.name|urlencode }}." target="_blank" class="btn text-white flex-grow-1" style="background-color: #25D366; border: none; font-weight: 600;">
+                                    <i class="fab fa-whatsapp me-1"></i> Enquire Now
+                                </a>
+                                {% else %}
+                                <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-primary-custom flex-grow-1"><i class="fas fa-cart-plus me-2"></i> Add to Cart</a>
+                                {% endif %}
+                                <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-outline-secondary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             {% endfor %}
         </div>
