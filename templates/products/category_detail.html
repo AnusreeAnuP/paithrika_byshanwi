@@ -18,16 +18,47 @@
             {% for product in products %}
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="product-card card h-100 border-0 shadow-sm">
-                    <div class="product-img-wrapper">
-                        {% if product.image %}
-                        <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
-                        {% else %}
-                        <div class="bg-secondary bg-opacity-10 w-100 h-100 d-flex justify-content-center align-items-center" style="min-height: 300px;">
-                            <i class="fas fa-image fa-3x text-muted"></i>
+                    <div class="product-img-wrapper position-relative">
+                        {% if product.images.exists %}
+                        <div id="carouselCategory{{ product.id }}" class="carousel slide h-100" data-bs-ride="false">
+                            <div class="carousel-inner h-100">
+                                {% if product.image %}
+                                <div class="carousel-item active h-100">
+                                    <a href="{% url 'products:product_detail' product.slug %}">
+                                        <img src="{{ product.image.url }}" class="product-img d-block w-100 h-100" style="object-fit:cover;" alt="{{ product.name }}">
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% for img in product.images.all %}
+                                <div class="carousel-item {% if not product.image and forloop.first %}active{% endif %} h-100">
+                                    <a href="{% url 'products:product_detail' product.slug %}">
+                                        <img src="{{ img.image.url }}" class="product-img d-block w-100 h-100" style="object-fit:cover;" alt="{{ product.name }} image">
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselCategory{{ product.id }}" data-bs-slide="prev" style="width: 15%; z-index: 5;">
+                                <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.3); border-radius: 50%; padding: 15px;"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselCategory{{ product.id }}" data-bs-slide="next" style="width: 15%; z-index: 5;">
+                                <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.3); border-radius: 50%; padding: 15px;"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
+                        {% elif product.image %}
+                        <a href="{% url 'products:product_detail' product.slug %}">
+                            <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
+                        </a>
+                        {% else %}
+                        <a href="{% url 'products:product_detail' product.slug %}" class="d-block h-100">
+                            <div class="bg-secondary bg-opacity-10 w-100 h-100 d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                                <i class="fas fa-image fa-3x text-muted"></i>
+                            </div>
+                        </a>
                         {% endif %}
                         
-                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-1">
+                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-1" style="z-index: 10;">
                             {% if product.is_new_arrival %}
                             <span class="badge bg-danger">New</span>
                             {% endif %}
