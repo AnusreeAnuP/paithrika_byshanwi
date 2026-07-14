@@ -398,14 +398,14 @@
                             </div>
                         </a>
                         {% endif %}
-                        <div class="position-absolute top-0 start-0 p-2 d-flex flex-column gap-2" style="z-index: 10;">
+                        <div class="position-absolute top-0 start-0 p-2 d-flex align-items-center gap-2" style="z-index: 10;">
                             <span class="badge text-white" style="background-color: var(--secondary-color);">Best Seller</span>
-                        </div>
-                        <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-2" style="z-index: 10;">
-                            <a href="{% url 'wishlist:wishlist_add' product.id %}" class="btn btn-light rounded-circle shadow-sm p-2 text-danger d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" title="Add to Wishlist">
+                            <a href="{% url 'wishlist:wishlist_add' product.id %}" class="text-danger" title="Add to Wishlist" style="font-size: 1.2rem;">
                                 <i class="fas fa-heart"></i>
                             </a>
-                            <button type="button" class="btn btn-light rounded-circle shadow-sm p-2 text-primary d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}" title="Quick View">
+                        </div>
+                        <div class="position-absolute top-0 end-0 p-2" style="z-index: 10;">
+                            <button type="button" class="btn btn-link p-0 text-dark" data-bs-toggle="modal" data-bs-target="#quickViewModalBS{{ product.id }}" title="Quick View" style="font-size: 1.2rem;">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
@@ -423,7 +423,7 @@
             </div>
 
             <!-- Quick View Modal (Best Sellers) -->
-            <div class="modal fade" id="quickViewModal{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalLabel{{ product.id }}" aria-hidden="true">
+            <div class="modal fade" id="quickViewModalBS{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalBSLabel{{ product.id }}" aria-hidden="true">
               <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                   <div class="modal-header border-0 pb-0">
@@ -437,7 +437,7 @@
                             {% endif %}
                         </div>
                         <div class="col-md-6 d-flex flex-column justify-content-center">
-                            <h3 id="quickViewModalLabel{{ product.id }}">{{ product.name }}</h3>
+                            <h3 id="quickViewModalBSLabel{{ product.id }}">{{ product.name }}</h3>
                             <h4 class="text-primary mb-3">₹{{ product.price }}</h4>
                             <p class="text-muted">{{ product.description|truncatewords:40 }}</p>
                             <div class="d-flex gap-2 mt-4">
