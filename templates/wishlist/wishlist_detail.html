@@ -24,7 +24,7 @@
                         {% endif %}
                         
                         <div class="position-absolute top-0 end-0 p-2" style="z-index: 10;">
-                            <a href="{% url 'wishlist:wishlist_remove' item.id %}" class="btn btn-light rounded-circle shadow-sm p-2 text-danger" title="Remove from wishlist">
+                            <a href="{% url 'wishlist:wishlist_remove' item.id %}" class="text-danger" title="Remove from wishlist" style="font-size: 1.2rem;">
                                 <i class="fas fa-times"></i>
                             </a>
                         </div>
