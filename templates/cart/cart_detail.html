@@ -42,7 +42,13 @@
                                             </div>
                                         </td>
                                         <td>₹{{ item.product.price }}</td>
-                                        <td>{{ item.quantity }}</td>
+                                        <td>
+                                            <div class="input-group input-group-sm" style="width: 100px;">
+                                                <a href="{% url 'cart:cart_update_quantity' item.id 'decrease' %}" class="btn btn-outline-secondary px-2 d-flex align-items-center justify-content-center text-decoration-none" style="width: 28px;">-</a>
+                                                <input type="text" class="form-control text-center px-0 bg-white" value="{{ item.quantity }}" readonly>
+                                                <a href="{% url 'cart:cart_update_quantity' item.id 'increase' %}" class="btn btn-outline-secondary px-2 d-flex align-items-center justify-content-center text-decoration-none" style="width: 28px;">+</a>
+                                            </div>
+                                        </td>
                                         <td class="fw-bold">₹{{ item.get_total_price }}</td>
                                         <td>
                                             <a href="{% url 'cart:cart_remove' item.id %}" class="text-danger"><i class="fas fa-trash"></i></a>
