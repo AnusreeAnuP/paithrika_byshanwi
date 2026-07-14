@@ -170,7 +170,7 @@
                     </div>
                     <div class="product-details card-body text-center">
                         <h3 class="product-title h6 mb-2">
-                            <a href="{% url 'products:product_detail' product.slug %}" class="text-dark text-decoration-none">{{ product.name }}</a>
+                            <a href="{% url 'products:product_detail' product.slug %}" class="text-white text-decoration-none">{{ product.name }}</a>
                         </h3>
                         <p class="product-price mb-3">₹{{ product.price }}</p>
                         <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-outline-dark btn-sm w-100">
@@ -412,7 +412,7 @@
                     </div>
                     <div class="product-details card-body text-center">
                         <h3 class="product-title h6 mb-2">
-                            <a href="{% url 'products:product_detail' product.slug %}" class="text-dark text-decoration-none">{{ product.name }}</a>
+                            <a href="{% url 'products:product_detail' product.slug %}" class="text-white text-decoration-none">{{ product.name }}</a>
                         </h3>
                         <p class="product-price mb-3">₹{{ product.price }}</p>
                         <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-outline-dark btn-sm w-100">
